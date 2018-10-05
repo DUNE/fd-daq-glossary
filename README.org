@@ -1,0 +1,6 @@
+* DUNE Far Detector DAQ Glossary
+
+This repository holds a glossary of terms used in the FD DAQ design.
+It shall be incorporated into the [[https://github.com/DUNE/dune-tdr][DUNE TDR]] but is kept independent in
+order that it may evolve beyond the TDR.
+

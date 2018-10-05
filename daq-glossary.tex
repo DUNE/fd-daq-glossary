@@ -1,0 +1,145 @@
+%% Define DUNE FD DAQ terms.
+%% This needs merging eventually into the TDR glossary.
+%% For now it directly uses low-level glossaries macros.
+
+\newglossary*{daq}{DAQ Glossary}
+
+\makenoidxglossaries
+
+% These are similar to dune-words but put in the "daq:" namespace.
+% You must remember to add this prefix when referencing DAQ terms.
+% Eg, \gls{daq:node}.
+
+
+%          1     2    3     4
+% \daqterm[]{label}{term}{desc}
+\newcommand\daqterm[4][]{%
+  \newglossaryentry{daq:#2} {%
+    type=daq,
+    text={#3},
+    long={#3},
+    name={\glsentrylong{daq:#2}},
+    description={#4},
+    #1
+  }}
+
+%          1     2      3     4   5
+% \daqabbr[]{label}{abbrev}{term}{desc}
+\newcommand\daqabbr[5][]{%
+  \newglossaryentry{daq:#2} {%
+    type=daq,
+    text={#3},
+    long={#4},
+    shortplural={{#3}\glspluralsuffix},
+    longplural={{#4}\glspluralsuffix{}},
+    name={\glsentrylong{daq:#2}{} (\glsentrytext{daq:#2}{})},
+    first={\glsentryname{daq:#2}},
+    firstplural={\glsentrylong{daq:#2}\glspluralsuffix{} (\glsentrytext{daq:#2}\glspluralsuffix{})},
+    description={#5},
+    #1
+  }}
+
+%% From top down
+
+\daqabbr{daq}{DAQ}{Data Acquisition}{A distributed, network application and the hardware on which it operates. 
+  It is composed of various components which ingest data from detector electronics. 
+  Based on the content of that data as well as human and automated guidance and configuration information it produces output in the form of files which contain a small subset of the input data.}
+
+\daqterm{part}{partition} {A synonym for \gls{daq:instance}.   Different DAQ partitions do not communicate nor inter-operate in any direct manner.  A partition may be considered to be composed of multiple \glspl{daq:frag}.}
+
+\daqterm{instance}{instance}{A synonym for \gls{daq:part}. A wholly independent instance of a DAQ.}
+
+%% split a DAQ "horizontally"
+
+\daqabbr{fe}{FE}{front-end}{A general description for the portion of the DAQ subsystems which are upstream near the source of input data provided by detector electronics.}
+
+\daqabbr{be}{BE}{back-end}{A general description for the portion of the DAQ subsystems which are downstream near the sink of output data provided by the offline.}
+
+%% split a DAQ "vertically"
+
+\daqterm[see={daq:datafrag,daq:daqfrag,daq:detfrag}]{frag}{fragment}{A general description for the largest subdivision of an aggregate for which data corresponding to that subdivision is treated in an atomic manner for the purposes of \gls{daq:ds}.  This term is often used qualified in some manner to refer to fragment of a specific larger aggregate.  The fragment is understood to correspond to the same lines of subdivision in all such qualified uses.}
+
+\daqterm{daqfrag}{fragment}{The portion of DAQ components corresponding to one \gls{daq:frag}.}
+
+\daqterm{datafrag}{data fragment}{A subset of the \gls{daq:datastream} specified as a spanning a given \gls{daq:window} and originating from one \gls{daq:detfrag}.}
+
+\daqterm{detfrag}{detector fragment}{A subset of detector electronics which provides data corresponding to one \gls{daq:frag}.}
+
+%% Major functionality
+
+\daqabbr[see={daq:selftrig,daq:td}]{ds}{DS}{Data Selection}{The action of providing input into the \gls{daq:td} typically by examining the \gls{daq:datastream} for activity.  As a subsystem, it refers to the \glspl{daq:component} for performing the action.}
+
+\daqabbr[see={daq:ptl}]{td}{TD}{trigger decision}{The action of aggregating all input from  \gls{daq:ds} and mapping it to a \gls{daq:ta}.}
+
+\daqabbr{da}{DA}{data aggregation}{The execution of a \gls{daq:td} performed by retrieving indicated \glspl{daq:datafrag} from their corresponding \gls{daq:buf}, collecting them into one \gls{daq:datablock} available for \gls{daq:beo}.}
+
+\daqabbr{rc}{RC}{Run Control}{The action by which human or automated intention is applied to DAQ \glspl{daq:component} for the purpose of initiating, configuring, directing, modifying or terminating their actions.}
+
+\daqterm{readout}{readout}{A generic term used to describe the transfer of data out of one system and into another.}
+
+\daqabbr{fer}{FER}{Front-end Readout}{The portion of the DAQ that receives data from detector electronics.}
+
+\daqabbr{beo}{BEO}{back-end output}{The portion of the DAQ that writes output files to disk buffer shared with offline.}
+
+\daqterm{buf}{primary buffer}{A distributed buffer through which all detector data shall stream such that the data may be consumed following some minimum delay long enough to provide time for the \gls{daq:ds}, \gls{daq:td} and \gls{daq:da} processes to complete. 
+  Each atomic unit of buffer shall be associated with an integral number of \glspl{daq:frag}.}
+
+%% Roles
+
+\daqabbr[see={daq:mtl,daq:gtl}]{ptl}{PTL}{pinnacle trigger logic}{Generic term for the DAQ \gls{daq:role} which performs \gls{daq:td} to produce a stream of \glspl{daq:ta}.}
+
+\daqabbr{mtl}{MTL}{Module Trigger Logic}{A \gls{daq:component} acting as a \gls{daq:ptl} at the level of one detector module.  In a DAQ with a MTL, all modules operate as peers and there is no single, central \gls{daq:ptl}.  However, they may indirectly send module level \gls{daq:td} to a central \gls{daq:etl} which may forward the information to other \glspl{daq:mtl} in the form of a \gls{daq:tc}.}
+
+\daqabbr{etl}{ETL}{External Trigger Logic}{A \gls{daq:component} which acts as an intermediate between \glspl{daq:mtl}.}
+
+\daqabbr{gtl}{GTL}{Global Trigger Logic}{A \gls{daq:component} acting as a \gls{daq:ptl} for the entire detector.  In a DAQ with a GTL, no \glspl{daq:mtl} nor \gls{daq:etl} exist.}
+
+\daqabbr{eb}{EB}{Event Builder}{A component in the \gls{daq:be} of the DAQ which performs \gls{daq:da}.}
+
+\daqterm{dsc}{Data Selector}{A component in the \gls{daq:fe} of the DAQ which services queries for \glspl{daq:datafrag} from its associated \gls{daq:buf}.}
+
+%% Generic part names
+
+\daqterm{component}{component}{A logical or physical subdivision of the DAQ which performs a specific \gls{daq:role}.  It may refer to a software processes or a unit of hardware.}
+
+\daqterm{node}{node}{An asynchronous software agent implementing a \gls{daq:component} which participates in the \gls{daq:ipc} system through the exchange of \glspl{daq:msg} with other nodes.}
+
+\daqterm{role}{role}{A action, behavior or resource which makes up some portion of the DAQ.  Although abstract, a role has specified, required characteristics which must be provided for any satisfactory implementation of the role.}
+
+%% Comms
+
+\daqabbr{ipc}{IPC}{interprocess communication}{A mechanism by which DAQ \glspl{daq:component} exchange \glspl{daq:msg}.}
+
+\daqterm{msg}{message}{A discrete, well formed unit of information produced or consumed by a DAQ \gls{daq:node} as part of the \gls{daq:ipc} system.}
+
+\daqabbr{ta}{TA}{Trigger Assertion}{A \gls{daq:msg} that describes a subset of the \gls{daq:datastream} to be output by the DAQ. 
+  It consists of a description for a \gls{daq:datablock} as collection of descriptions of \glspl{daq:datafrag} and for each a number of \glspl{daq:actdesc}.  (Note: this is often just called ``trigger'' but that shall be resisted.)}
+
+\daqabbr{tc}{TC}{Trigger Candidate}{A \gls{daq:msg} which describes a portion of the detector data stream to be considered for output or to lead to output of other portions by the \gls{daq:td}.}
+
+\daqabbr{tp}{TP}{Trigger Primitive}{A \gls{daq:msg} which describes potential activity over some  contiguous period of time and from a single electronics channel.  These may be combined across some number of contiguous channels to produce \glspl{daq:tc}.}
+
+
+\daqterm{tps}{trigger primitive source}{A DAQ \gls{daq:role} performed by a DAQ \gls{daq:node} which produces a stream of \gls{daq:tp} \glspl{daq:msg}.}
+
+
+\daqterm{tcs}{trigger candidate source}{A DAQ \gls{daq:role} performed by a DAQ \gls{daq:node} which produces a stream of \gls{daq:tc} \glspl{daq:msg}.}
+
+
+\daqterm{selftrig}{self-trigger}{A process by which the DAQ may select a portion of its input data stream by examining a portion of its input data stream. 
+  The selected portion need not be a strict subset of the examined portion.}
+
+
+
+\daqterm{datablock}{Data Block}{A subset of the \gls{daq:datastream} specified in terms of a \gls{daq:window} and a set of \glspl{daq:datafrag}.  This term may also refer to the period and addressing associated with its boundary in time and channel.  (Note: it is tempting to call this an ``event'' but that shall be resisted.)}
+
+
+\daqterm[see={daq:ta}]{actdesc}{Activity Descriptor}{One of an enumerated list of labels used to indicate a possible type of activity is present in some examined data.}
+
+
+\daqterm{datastream}{detector data stream}{The continuous data input to one DAQ \gls{daq:part} from one \gls{daq:detpart}.}
+
+\daqterm{detpart}{detector partition}{The portion detector electronics and other data sources associated with one \gls{daq:part}.}
+
+
+\daqterm{window}{time window}{A subset of the \gls{daq:datastream} which spans a single, contiguous period of time.}

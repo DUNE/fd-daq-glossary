@@ -1,0 +1,111 @@
+\documentclass[letterpaper,article,oneside]{memoir}
+\setsecnumdepth{subsubsection}
+\counterwithout{section}{chapter}
+
+\usepackage[nopostdot]{glossaries}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{xspace}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage[utf8]{inputenx}
+\usepackage[margin=2cm]{geometry}
+\usepackage{subfig}
+\usepackage{siunitx}
+\usepackage{hyperref}
+
+\setglossarystyle{index}
+\input{daq-glossary}
+
+\title{DUNE FD DAQ Glossary}
+%\author{Brett Viren}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents*
+
+\section{Introduction}
+\label{sec:intro}
+
+The DUNE Far Detector DAQ is composed of many parts performing
+specific roles by transmitting data streams and discrete messages of
+specific type. 
+These parts and messages must operate in concert. 
+In order to discus, describe and develop the DAQ design a shared
+vocabulary is needed in order to avoid chaotic babel.
+
+This glossary serves as a reference and specification for the terms of
+that vocabulary.
+A design language it must of course reflect the design itself and thus
+shall evolve as the design evolves. 
+This glossary of this document shall be merged into the DUNE Technical
+Design Report. 
+The glossary in this document shall be revised as required to follow
+design evolution subsequent to the TDR completion and it shall be
+expanded as the DAQ design is implemented and new terms are needed to
+cover concrete systems, parts and messages.
+
+\section{Verboten and Generic Terms}
+
+Here we give a short ``anti glossary'' of terms that shall be avoided
+(verboten), called out as generic or otherwise are listed to highlight
+potential ambiguity.
+
+to call
+attention to potential ambiguity.
+These terms, spoken in isolation, typically have meanings which are
+ambiguous and lead to more confusion than clarity. 
+Used with sufficient qualifiers they may be legal terms in the
+vocabulary.
+However, they are sometimes used more formally but with a lack of
+clarity. 
+They are also explicitly listed so that the vocabulary may take care
+to avoid using them in an ambiguous manner.
+
+
+\begin{description}
+\item[\sout{event}] This term has many context-dependent meanings and
+  in some contexts even those meanings are ambiguous. 
+  The term \sout{event} is particularly ambiguous in the case of
+  detectors such as DUNE FD where there are many particle interactions
+  in a subset of data output by the DAQ.
+  The DAQ vocabulary will explicitly
+  refrain from using this term to describe any occurrence in space or
+  time or to refer to any subset of the DAQ \gls{daq:datastream}. 
+  As an occurrence, various related vocabulary terms are defined:
+  \gls{daq:actdesc}, \gls{daq:tp}, \gls{daq:tc} and \gls{daq:ta}. 
+  As a subset of data, related terms are: \gls{daq:datafrag} and
+  \gls{daq:datablock}. 
+  However, to accommodate established nomenclature, this term is
+  explicitly used as a modifier to name \gls{daq:eb} component.
+\item[\sout{readout}] Unqualified, the term \gls{daq:readout} is used
+  generically. 
+  Modified, it is used vocabulary terms: \gls{daq:fer}.
+\item[\sout{trigger}] This word is used as a modifier in several vocabulary
+  terms related to the process of \gls{daq:ds}. 
+  They are: \gls{daq:tp}, \gls{daq:tc}, \gls{daq:ta}. 
+  In written prose the unqualified term shall be avoided. 
+  In informal dialog (or where avoidance fails) it shall be considered
+  a synonym for \gls{daq:ta}.
+\end{description}
+
+
+\section{Glossary Conventions}
+
+The glossary covers:
+
+\begin{description}
+\item[verbs] The major functions of the DAQ are in the form of active verbs.
+\item[nouns] Conceptual elements are in the form of general nouns.
+\item[Proper Noun] Explicitly named components and subsystems are capitalized as proper nouns.
+\item[abbreviations] Some commonly used terms are given parenthetical abbreviations.
+\end{description}
+
+% \printglossaries
+\printnoidxglossary[type=daq]
+
+\glsaddallunused
+
+\end{document}
