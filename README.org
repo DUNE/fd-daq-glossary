@@ -4,3 +4,41 @@ This repository holds a glossary of terms used in the FD DAQ design.
 It shall be incorporated into the [[https://github.com/DUNE/dune-tdr][DUNE TDR]] but is kept independent in
 order that it may evolve beyond the TDR.
 
+* Build the document
+
+** Manually
+
+#+BEGIN_EXAMPLE
+pdflatex daq-vocabulary
+makeglossaries daq-vocabulary
+pdflatex daq-vocabulary
+pdflatex daq-vocabulary
+#+END_EXAMPLE
+
+** Using provided Waf
+
+#+BEGIN_EXAMPLE
+./waf configure build
+ls build/daq-vocabulary.pdf
+#+END_EXAMPLE
+
+** Using ~latexmk~
+
+#+BEGIN_EXAMPLE
+latexmk -pvc daq-vocabulary
+#+END_EXAMPLE
+
+To deal with the ~glossaries~, you'll likely need something like the
+following in your =~/.latexmkrc=:
+
+#+BEGIN_EXAMPLE
+add_cus_dep( 'glo', 'gls', 0, 'makeglo2gls' );
+sub makeglo2gls {
+    system("makeindex -s \"$_[0].ist\" -t \"$_[0].glg\" -o \"$_[0].gls\" \"$_[0].glo\"" );
+}
+# observe note about glossaries requiring exchange of acn/acr:
+add_cus_dep( 'acn', 'acr', 0, 'makeacr2acn' );
+sub makeacr2acn {
+    system( "makeindex -s \"$_[0].ist\" -t \"$_[0].alg\" -o \"$_[0].acr\" \"$_[0].acn\"" );
+}
+#+END_EXAMPLE

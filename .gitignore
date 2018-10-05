@@ -1,2 +1,8 @@
 *~
 .#*
+daq-vocabulary.*
+latexmk-out
+build
+auto
+.waf*
+.lock-waf*

@@ -11,7 +11,9 @@ def build(bld):
     if bld.options.debug:
         prompt_level = 1
 
+    name = "daq-vocabulary"
+
     bld(features='tex', prompt = prompt_level,
-        source = "daq-vocabulary.tex",
-        target = "daq-vocabulary.pdf")
-    bld.install_files('${PREFIX}', [volpdf])
+        source = name + ".tex",
+        target = name + ".pdf")
+
